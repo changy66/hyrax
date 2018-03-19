@@ -53,6 +53,25 @@ module Hyrax
       end
       private_class_method :run_report
 
+      # Google Analytics filters to apply to page_report queries
+      # Google specifies that OR conditions are comma-separate and AND conditions are colon
+      # This filter query is saying "Include everything in known model paths AND exclude /edit subpaths"
+      def self.filters
+        paths = super
+        include_filters(paths) + ';' + exclude_filters(paths)
+      end
+      private_class_method :filters
+
+      def self.include_filters(paths)
+        paths.map { |p| "ga:pagePath~=#{p}" }.join(',')
+      end
+      private_class_method :include_filters
+
+      def self.exclude_filters(paths)
+        paths.map { |p| "ga:pagePath!=#{p}/edit" }.join(',')
+      end
+      private_class_method :include_filters
+
       def self.report_request(date_ranges, dimensions, metrics, filters)
         GetReportsRequest.new(
           report_requests: [ReportRequest.new(view_id: 'ga:' + config['view_id'].to_s,
