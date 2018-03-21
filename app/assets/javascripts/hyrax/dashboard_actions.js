@@ -32,9 +32,24 @@ Blacklight.onLoad(function() {
     return false;
   });
 
-  // Create sortable, searchable table
-  $('#analytics-collections-table').DataTable();
-  $('#analytics-works-table').DataTable();
+  // Create sortable, searchable collections table
+  var analytics_collections_table = $('#analytics-collections-table');
+
+  analytics_collections_table.DataTable({ responsive: true });
+
+  // Pin a collection
+  analytics_collections_table.on('click', function(e) {
+    var target = $('#' + e.target.id);
+    var pinned = !target.hasClass('pinned');
+
+    target.toggleClass('pinned', pinned);
+    target.toggleClass('not-pinned', !target.hasClass('not-pinned'));
+  });
+
+  // Create sortable, searchable works table
+  $('#analytics-works-table').DataTable({
+    responsive: true
+  });
 
   // Transition between time periods or object type
   $('.admin-repo-charts').on('click', function(e) {
