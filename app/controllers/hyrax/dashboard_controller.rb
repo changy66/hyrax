@@ -38,5 +38,12 @@ module Hyrax
       @presenter = Hyrax::Admin::RepositoryObjectPresenter.new(params[:type_value])
       render json: @presenter
     end
+
+    def pin_collection
+      return unless can? :read, :admin_dashboard
+      @presenter = Hyrax::Admin::RepositoryObjectPresenter.new
+      @presenter.pinned_collection(params)
+      render json: @presenter
+    end
   end
 end

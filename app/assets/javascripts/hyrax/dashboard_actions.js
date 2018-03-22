@@ -33,25 +33,38 @@ Blacklight.onLoad(function() {
   });
 
   // Create sortable, searchable collections table
-  var analytics_collections_table = $('#analytics-collections-table');
-
-  analytics_collections_table.DataTable({ responsive: true });
+  var collections_table = '#analytics-collections-table';
+  var collections = createDataTable(collections_table);
 
   // Pin a collection
-  analytics_collections_table.on('click', function(e) {
+  $(collections_table).on('click', function(e) {
     var target = $('#' + e.target.id);
     var pinned = !target.hasClass('pinned');
 
     target.toggleClass('pinned', pinned);
     target.toggleClass('not-pinned', !target.hasClass('not-pinned'));
+
+    // Update pinned status in the db
+    $.ajax({
+      method: 'POST',
+      url: '/dashboard/pin_collection',
+      data: { status: pinned, collection: target.attr('data-collection') }
+    }).done(function(data) {
+
+    });
   });
 
   // Create sortable, searchable works table
-  $('#analytics-works-table').DataTable({
-    responsive: true
+  var works = createDataTable('#analytics-works-table');
+
+  // Destroy existing dataTables or Turbolinks keeps adding them to the page
+  // when user hits back/forward buttons
+  $(document).on('turbolinks:before-cache', function() {
+    works.destroy();
+    collections.destroy();
   });
 
-  // Transition between time periods or object type
+  // Transition between time periods or object type for admin charts
   $('.admin-repo-charts').on('click', function(e) {
     var type_id = e.target.id;
     var field = $('#' + type_id);
@@ -65,6 +78,14 @@ Blacklight.onLoad(function() {
       field.addClass('stats-selected');
     });
   });
+
+  function createDataTable(selector, options) {
+    if (options === undefined) {
+      options = {};
+    }
+    options['responsive'] = true;
+    return $(selector).DataTable(options);
+  }
 
   function updateChart(id, data) {
     var chart = Chartkick.charts[id];
