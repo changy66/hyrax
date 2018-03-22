@@ -20,8 +20,8 @@ module Hyrax
 
     def repository_growth
       return unless can? :read, :admin_dashboard
-      @growth = Hyrax::Admin::RepositoryGrowthPresenter.new(params[:time_period])
-      render json: @growth
+      @repo_growth = Hyrax::Admin::RepositoryGrowthPresenter.new(params[:time_period])
+      render json: @repo_growth
     end
 
     def repository_object_counts
