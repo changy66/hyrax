@@ -75,6 +75,10 @@ RSpec.describe 'Routes', type: :routing do
       expect(get: '/dashboard/repository_object_counts').to route_to(controller: 'hyrax/dashboard', action: 'repository_object_counts')
     end
 
+    it "routes to update list of works" do
+      expect(get: '/dashboard/update_works_list').to route_to(controller: 'hyrax/dashboard', action: 'update_works_list')
+    end
+
     it "routes to all works" do
       expect(get: '/dashboard/works').to route_to(controller: 'hyrax/dashboard/works', action: 'index')
     end
