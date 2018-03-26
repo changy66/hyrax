@@ -95,7 +95,7 @@ RSpec.describe 'Adding a work to multiple collections', type: :feature, clean_re
           end
           # forwards to collections index page and shows flash message
           expect(page).to have_link 'All Collections'
-          expect(page).to have_link 'Your Collections'
+          expect(page).to have_link 'Collections'
 
           err_message = "Error: You have specified more than one of the same single-membership collection types: " \
                         "Single-membership 1 (#{new_collection.title.first} and #{old_collection.title.first})"
@@ -130,7 +130,7 @@ RSpec.describe 'Adding a work to multiple collections', type: :feature, clean_re
           end
           # forwards to collections index page and shows flash message
           expect(page).to have_link 'All Collections'
-          expect(page).to have_link 'Your Collections'
+          expect(page).to have_link 'Collections'
 
           err_message = "Error: You have specified more than one of the same single-membership collection types: " \
                         "Single-membership 1 (#{new_collection.title.first} and #{old_collection.title.first})"
